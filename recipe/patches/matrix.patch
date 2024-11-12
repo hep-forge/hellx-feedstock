@@ -1,0 +1,16 @@
+diff --git a/include/math/matrix.hh b/include/math/matrix.hh
+index 10ad7ff..812f3cf 100644
+--- a/include/math/matrix.hh
++++ b/include/math/matrix.hh
+@@ -193,8 +193,8 @@ public:
+   }
+ 
+   inline sqmatrix inverse() {
+-    T d = det(*this);
+-    if(d==0) {
++    T d = det();
++    if(d==0.) {
+       cout << "Matrix not invertible!" << endl;
+       exit(44);
+     }
+-- 

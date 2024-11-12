@@ -1,0 +1,40 @@
+{% set versions = {
+    "3.0" : "0c424f09091c904683166a74e98cd1c1e53e2d83eea5fbfb16d65181b386642e"
+} %}
+
+
+{% set version = environ.get('COMMIT_VERSION', None) %}
+{% set version = version or versions.keys()|first %}
+{% set version = version|string %}
+
+package:
+  name: {{ environ.get('ANACONDA_PACKAGE', "hellx")|string|lower }}
+  version: {{ environ.get('ANACONDA_VERSION', version)|replace('/', '.')|replace('-', '.') }}
+
+source:
+  url: "https://www.roma1.infn.it/~bonvini/hell/downloads/HELLx.v{{ version }}.tgz"
+  {% if versions.get(version, None) %}
+  sha256: {{ versions.get(version) }}
+  {% endif %}
+  patches:
+    - patches/pic.patch
+    - patches/matrix.patch
+
+requirements:
+  build:
+    - {{ compiler('gfortran') }}   # GNU Fortran compiler
+    - {{ compiler('c') }}          # GNU C compiler
+    - {{ compiler('cxx') }}        # GNU C++ compiler
+    
+    - make                         # Make utility
+
+about:
+  home: "https://www.roma1.infn.it/~bonvini/hell"
+  license: "GPL-3.0"
+  summary: "High Energy Large Logarithms, a small-x resummation code"
+  description: |
+        HELL is a code which resums the dominant small-x logarithms in DGLAP splitting functions (at LL and NLL) and in coefficient functions (at relative LL only, which is absolute NLL in DIS).
+
+extra:
+  recipe-maintainers:
+    - meiyasan
