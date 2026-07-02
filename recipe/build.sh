@@ -3,7 +3,8 @@
 wget https://www.roma1.infn.it/~bonvini/hell/downloads/HELLx-data.v3.tgz
 tar --transform='s,^HELLx/,,' -xzvf HELLx-data.v3.tgz
 
-make -j$(nproc)
+NPROC=$(nproc 2>/dev/null || sysctl -n hw.ncpu)
+make -j$NPROC
 
 mkdir -p ${PREFIX}/lib
 cp -R libhell-x.a ${PREFIX}/lib/
