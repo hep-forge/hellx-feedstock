@@ -1,7 +1,12 @@
 #! /usr/bin/bash
+set -e
 
-wget https://www.roma1.infn.it/~bonvini/hell/downloads/HELLx-data.v3.tgz
-tar --transform='s,^HELLx/,,' -xzvf HELLx-data.v3.tgz
+# curl and plain tar: macOS has no wget, and its tar has no GNU --transform.
+curl -fsSLO https://www.roma1.infn.it/~bonvini/hell/downloads/HELLx-data.v3.tgz
+tar -xzf HELLx-data.v3.tgz
+cp -R HELLx/. .
+rm -rf HELLx
+
 
 NPROC=$(nproc 2>/dev/null || sysctl -n hw.ncpu)
 make -j$NPROC
